@@ -1,0 +1,33 @@
+{
+  "name": "observ-mediastream",
+  "version": "1.0.0",
+  "description": "An observable representation of a W3C MediaStream",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gendocs": "gendocs > README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DamonOehlman/observ-mediastream.git"
+  },
+  "keywords": [
+    "webrtc",
+    "mediastream",
+    "observable"
+  ],
+  "author": "Damon Oehlman <damon.oehlman@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DamonOehlman/observ-mediastream/issues"
+  },
+  "homepage": "https://github.com/DamonOehlman/observ-mediastream",
+  "dependencies": {
+    "observ": "^0.2.0",
+    "observ-array": "^3.1.0",
+    "observ-struct": "^6.0.0"
+  },
+  "devDependencies": {
+    "getusermedia": "^1.1.0"
+  }
+}
