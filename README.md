@@ -6,7 +6,7 @@ represented simply using [observables](https://github.com/Raynos/observ)
 
 [![NPM](https://nodei.co/npm/observ-mediastream.png)](https://nodei.co/npm/observ-mediastream/)
 
-
+[![experimental](https://img.shields.io/badge/stability-experimental-red.svg)](https://github.com/dominictarr/stability#experimental) 
 
 ## Example Usage
 
