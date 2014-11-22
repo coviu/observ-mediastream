@@ -15,5 +15,7 @@ getUserMedia({ audio: true, video: true }, function(err, s) {
     console.log('captured changes: ', value);
   });
 
+  // we've patched an update function into the observ-struct so we can
+  // supply the complex stream value
   stream.update(s);
 });
