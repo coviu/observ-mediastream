@@ -1,7 +1,7 @@
 var Observ = require('observ');
 var ObservArray = require('observ-array');
 var ObservStruct = require('observ-struct');
-
+var MediaStream = require('feature/detect')('MediaStream');
 /**
   # observ-mediastream
 
@@ -16,24 +16,7 @@ module.exports = function(mediastream) {
   var muted = Observ(false);
   var tracks = ObservArray([]);
   var s;
-
-  function addTrack(target) {
-    return function(track) {
-      track.addEventListener('mute', function(evt) {
-        console.log('captured mute event', evt);
-      });
-
-      track.addEventListener('ended', function(evt) {
-        console.log('captured track end: ', track, evt);
-      });
-
-      if (track && track.kind === 'audio' && (track.enabled === muted())) {
-        muted.set(!track.enabled);
-      }
-
-      target.push(track);
-    };
-  }
+  var _set;
 
   function getAudioTracks() {
     return tracks.filter(function(track) {
@@ -41,11 +24,22 @@ module.exports = function(mediastream) {
     });
   }
 
-  function handleUpdate(newStream) {
-    tracks.transaction(function(items) {
-      newStream.getVideoTracks().forEach(addTrack(items));
-      newStream.getAudioTracks().forEach(addTrack(items));
-    });
+  function set(newStream) {
+    var isMuted;
+
+    if (! (newStream instanceof MediaStream)) {
+      return _set(newStream);
+    }
+
+    s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
+
+    isMuted = s.tracks.filter(function(track) {
+      track.kind === 'audio' && (! track.enabled);
+    })[0] || false;
+
+    if (s.muted() !== isMuted) {
+      s.muted.set(isMuted);
+    }
   }
 
   function toggleMuted(value) {
@@ -55,14 +49,15 @@ module.exports = function(mediastream) {
   }
 
   if (mediastream) {
-    handleUpdate(mediastream);
+    set(newStream);
   }
 
   // toggle muted state
   muted(toggleMuted);
 
   s = ObservStruct({ tracks: tracks, muted: muted });
-  s.update = handleUpdate;
+  _set = s.set;
+  s.set = set;
 
   return s;
 };
