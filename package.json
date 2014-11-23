@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/DamonOehlman/observ-mediastream",
   "dependencies": {
+    "feature": "^0.1.4",
     "observ": "^0.2.0",
     "observ-array": "^3.1.0",
     "observ-struct": "^6.0.0"
