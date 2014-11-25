@@ -10,19 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DamonOehlman/observ-mediastream.git"
+    "url": "https://github.com/rtc-io/observ-mediastream.git"
   },
   "keywords": [
     "webrtc",
     "mediastream",
     "observable"
   ],
-  "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "license": "ISC",
+  "author": "Damon Oehlman <damon.oehlman@nicta.com.au>",
+  "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/DamonOehlman/observ-mediastream/issues"
+    "url": "https://github.com/rtc-io/observ-mediastream/issues"
   },
-  "homepage": "https://github.com/DamonOehlman/observ-mediastream",
+  "homepage": "https://github.com/rtc-io/observ-mediastream",
   "dependencies": {
     "feature": "^1.0.0",
     "observ": "^0.2.0",
