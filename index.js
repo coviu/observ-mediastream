@@ -14,6 +14,7 @@ var MediaStream = require('feature/detect')('MediaStream');
 **/
 module.exports = function(mediastream) {
   var muted = Observ(false);
+  var raw = Observ(null);
   var tracks = ObservArray([]);
   var s;
   var _set;
@@ -31,6 +32,7 @@ module.exports = function(mediastream) {
       return _set(newStream);
     }
 
+    raw.set(newStream);
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
@@ -55,7 +57,7 @@ module.exports = function(mediastream) {
   // toggle muted state
   muted(toggleMuted);
 
-  s = ObservStruct({ tracks: tracks, muted: muted });
+  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw });
   _set = s.set;
   s.set = set;
 
