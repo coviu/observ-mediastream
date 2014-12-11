@@ -50,16 +50,16 @@ module.exports = function(mediastream) {
     });
   }
 
+  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw });
+  _set = s.set;
+  s.set = set;
+
   if (mediastream) {
-    set(newStream);
+    set(mediastream);
   }
 
   // toggle muted state
   muted(toggleMuted);
-
-  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw });
-  _set = s.set;
-  s.set = set;
 
   return s;
 };
