@@ -2,6 +2,7 @@ var Observ = require('observ');
 var ObservArray = require('observ-array');
 var ObservStruct = require('observ-struct');
 var MediaStream = require('feature/detect')('MediaStream');
+var URL = require('feature/detect')('URL');
 /**
   # observ-mediastream
 
@@ -15,6 +16,7 @@ var MediaStream = require('feature/detect')('MediaStream');
 module.exports = function(mediastream) {
   var muted = Observ(false);
   var raw = Observ(null);
+  var url = Observ(null);
   var tracks = ObservArray([]);
   var s;
   var _set;
@@ -32,7 +34,13 @@ module.exports = function(mediastream) {
       return _set(newStream);
     }
 
+    // if we have an existing url, revoke the url
+    if (url()) {
+      URL.revokeObjectURL(url());
+    }
+
     raw.set(newStream);
+    url.set(URL.createObjectURL(newStream));
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
@@ -50,7 +58,7 @@ module.exports = function(mediastream) {
     });
   }
 
-  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw });
+  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url });
   _set = s.set;
   s.set = set;
 
