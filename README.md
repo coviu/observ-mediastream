@@ -6,10 +6,7 @@ represented simply using [observables](https://github.com/Raynos/observ)
 
 [![NPM](https://nodei.co/npm/observ-mediastream.png)](https://nodei.co/npm/observ-mediastream/)
 
-[![experimental](https://img.shields.io/badge/stability-experimental-red.svg)](https://github.com/dominictarr/stability#experimental) 
-[![rtc.io google group](http://img.shields.io/badge/discuss-rtc.io-blue.svg)](https://groups.google.com/forum/#!forum/rtc-io)
-
-
+[![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable) [![bitHound Score](https://www.bithound.io/github/rtc-io/observ-mediastream/badges/score.svg)](https://www.bithound.io/github/rtc-io/observ-mediastream) 
 
 ## Example Usage
 
@@ -40,7 +37,7 @@ getUserMedia({ audio: true, video: true }, function(err, s) {
 
 ### Apache 2.0
 
-Copyright 2014 National ICT Australia Limited (NICTA)
+Copyright 2015 National ICT Australia Limited (NICTA)
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
