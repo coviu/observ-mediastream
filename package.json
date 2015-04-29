@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rtc-io/observ-mediastream.git"
+    "url": "https://github.com/coviu/observ-mediastream.git"
   },
   "keywords": [
     "webrtc",
@@ -20,9 +20,9 @@
   "author": "Damon Oehlman <damon.oehlman@nicta.com.au>",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/rtc-io/observ-mediastream/issues"
+    "url": "https://github.com/coviu/observ-mediastream/issues"
   },
-  "homepage": "https://github.com/rtc-io/observ-mediastream",
+  "homepage": "https://github.com/coviu/observ-mediastream",
   "dependencies": {
     "feature": "^1.0.0",
     "observ": "^0.2.0",
