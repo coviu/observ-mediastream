@@ -13,11 +13,14 @@ var URL = require('feature/detect')('URL');
 
   <<< examples/simple.js
 **/
-module.exports = function(mediastream) {
+module.exports = function(mediastream, opts) {
+  opts = opts || {};
   var muted = Observ(false);
   var raw = Observ(null);
   var url = Observ(null);
   var tracks = ObservArray([]);
+  var tags = ObservArray(opts.tags || []);
+  var metadata = ObservStruct(opts.metadata || {});
   var s;
   var _set;
 
@@ -58,7 +61,7 @@ module.exports = function(mediastream) {
     });
   }
 
-  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url });
+  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url, tags: tags, metadata: metadata });
   _set = s.set;
   s.set = set;
 

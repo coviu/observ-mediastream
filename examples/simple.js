@@ -13,6 +13,7 @@ getUserMedia({ audio: true, video: true }, function(err, s) {
 
   setTimeout(function() {
     stream.muted.set(true);
+    stream.tags.set(['camera']);
   }, 1000);
 
   stream.set(s);
