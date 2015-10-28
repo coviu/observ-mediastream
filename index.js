@@ -33,17 +33,19 @@ module.exports = function(mediastream, opts) {
   function set(newStream) {
     var isMuted;
 
-    if (! (newStream instanceof MediaStream)) {
+    if ((MediaStream && !(newStream instanceof MediaStream)) || newStream._diff) {
       return _set(newStream);
     }
 
-    // if we have an existing url, revoke the url
-    if (url()) {
-      URL.revokeObjectURL(url());
+    if (URL) {
+      // if we have an existing url, revoke the url
+      if (url()) {
+        URL.revokeObjectURL(url());
+      }
+      url.set(URL.createObjectURL(newStream));
     }
 
     raw.set(newStream);
-    url.set(URL.createObjectURL(newStream));
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
