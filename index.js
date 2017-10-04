@@ -42,7 +42,12 @@ module.exports = function(mediastream, opts) {
       if (url()) {
         URL.revokeObjectURL(url());
       }
-      url.set(URL.createObjectURL(newStream));
+      try {
+        url.set(URL.createObjectURL(newStream));
+      } catch (e) {
+        // Might be in a browser that has issues with creating object URLs with media streams
+        // Aka. Safari 11. Instead of using the url, use the raw media stream and `el.srcObject = rawMediaStream`
+      }
     }
 
     raw.set(newStream);
