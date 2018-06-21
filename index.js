@@ -65,14 +65,12 @@ module.exports = function(mediastream, opts) {
     if (s.muted() !== isMuted) {
       s.muted.set(isMuted);
     }
-    touch();
   }
 
   function toggleMuted(value) {
     getAudioTracks().forEach(function(track) {
       track.enabled = !value;
     });
-    touch();
   }
 
   s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url, tags: tags, metadata: metadata, version: version });
