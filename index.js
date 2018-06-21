@@ -18,6 +18,7 @@ module.exports = function(mediastream, opts) {
   var muted = Observ(false);
   var raw = Observ(null);
   var url = Observ(null);
+  var version = Observ(1);
   var tracks = ObservArray([]);
   var tags = ObservArray(opts.tags || []);
   var metadata = ObservStruct(opts.metadata || {});
@@ -28,6 +29,10 @@ module.exports = function(mediastream, opts) {
     return tracks.filter(function(track) {
       return track.kind === 'audio';
     });
+  }
+
+  function touch() {
+    s.version.set(version() + 1);
   }
 
   function set(newStream) {
@@ -54,7 +59,7 @@ module.exports = function(mediastream, opts) {
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
-      track.kind === 'audio' && (! track.enabled);
+      return track.kind === 'audio' && (! track.enabled);
     })[0] || false;
 
     if (s.muted() !== isMuted) {
@@ -68,9 +73,10 @@ module.exports = function(mediastream, opts) {
     });
   }
 
-  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url, tags: tags, metadata: metadata });
+  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url, tags: tags, metadata: metadata, version: version });
   _set = s.set;
   s.set = set;
+  s.touch = touch;
 
   if (mediastream) {
     set(mediastream);
