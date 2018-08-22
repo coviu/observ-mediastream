@@ -59,7 +59,9 @@ module.exports = function(mediastream, opts) {
     var existing = raw();
     if (existing) {
       existing.tracks.map(function(t) {
-        t.removeListener('ended', touch)
+        t.removeListener('ended', touch);
+        t.removeListener('mute', touch);
+        t.removeListener('unmute', touch);
       });
     }
 
@@ -67,8 +69,10 @@ module.exports = function(mediastream, opts) {
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
-      // Attach the end state listeners on the tracks
+      // Attach the change of state listeners on the tracks
       track.addEventListener('ended', touch);
+      track.addEventListener('mute', touch);
+      track.addEventListener('unmute', touch);
       // Return the track if it matches the mute check
       return track.kind === 'audio' && (! track.enabled);
     })[0] || false;
