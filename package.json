@@ -1,6 +1,6 @@
 {
   "name": "observ-mediastream",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "An observable representation of a W3C MediaStream",
   "main": "index.js",
   "stability": "unstable",
