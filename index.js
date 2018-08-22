@@ -40,7 +40,7 @@ module.exports = function(mediastream, opts) {
 
     if ((MediaStream && !(newStream instanceof MediaStream)) || newStream._diff) {
       return _set(newStream);
-    }
+    }    
 
     if (URL) {
       // if we have an existing url, revoke the url
@@ -55,10 +55,21 @@ module.exports = function(mediastream, opts) {
       }
     }
 
+    // Clean remove the listeners
+    var existing = raw();
+    if (existing) {
+      existing.tracks.map(function(t) {
+        t.removeListener('ended', touch)
+      });
+    }
+
     raw.set(newStream);
     s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
 
     isMuted = s.tracks.filter(function(track) {
+      // Attach the end state listeners on the tracks
+      track.addEventListener('ended', touch);
+      // Return the track if it matches the mute check
       return track.kind === 'audio' && (! track.enabled);
     })[0] || false;
 
