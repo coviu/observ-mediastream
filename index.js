@@ -56,9 +56,11 @@ module.exports = function(mediastream, opts) {
     }
 
     // Clean remove the listeners
-    const existing = raw();
+    var existing = raw();
     if (existing) {
-      existing.tracks.map((t) => t.removeListener('ended', touch))
+      existing.tracks.map(function(t) {
+        t.removeListener('ended', touch)
+      });
     }
 
     raw.set(newStream);
