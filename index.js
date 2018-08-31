@@ -57,8 +57,8 @@ module.exports = function(mediastream, opts) {
 
     // Clean remove the listeners
     var existing = raw();
-    if (existing) {
-      existing.tracks.map(function(t) {
+    if (existing && existing.getTracks) {
+      existing.getTracks().map(function(t) {
         t.removeListener('ended', touch);
         t.removeListener('mute', touch);
         t.removeListener('unmute', touch);
