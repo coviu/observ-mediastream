@@ -59,9 +59,9 @@ module.exports = function(mediastream, opts) {
     var existing = raw();
     if (existing && existing.getTracks) {
       existing.getTracks().map(function(t) {
-        t.removeListener('ended', touch);
-        t.removeListener('mute', touch);
-        t.removeListener('unmute', touch);
+        t.removeEventListener('ended', touch);
+        t.removeEventListener('mute', touch);
+        t.removeEventListener('unmute', touch);
       });
     }
 
