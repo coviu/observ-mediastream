@@ -1,8 +1,8 @@
-var Observ = require('observ');
-var ObservArray = require('observ-array');
-var ObservStruct = require('observ-struct');
-var MediaStream = require('feature/detect')('MediaStream');
-var URL = require('feature/detect')('URL');
+const Observ = require('observ');
+const ObservArray = require('observ-array');
+const ObservStruct = require('observ-struct');
+const MediaStream = require('feature/detect')('MediaStream');
+const URL = require('feature/detect')('URL');
 /**
   # observ-mediastream
 
@@ -15,15 +15,15 @@ var URL = require('feature/detect')('URL');
 **/
 module.exports = function(mediastream, opts) {
   opts = opts || {};
-  var muted = Observ(false);
-  var raw = Observ(null);
-  var url = Observ(null);
-  var version = Observ(1);
-  var tracks = ObservArray([]);
-  var tags = ObservArray(opts.tags || []);
-  var metadata = ObservStruct(opts.metadata || {});
-  var s;
-  var _set;
+  const muted = Observ(false); // If an audio track has been disabled.
+  const raw = Observ(null);
+  const url = Observ(null);
+  const version = Observ(1);
+  const tracks = ObservArray([]);
+  const tags = ObservArray(opts.tags || []);
+  const metadata = ObservStruct(opts.metadata || {});
+  let s;
+  let _set;
 
   function getAudioTracks() {
     return tracks.filter(function(track) {
@@ -36,7 +36,7 @@ module.exports = function(mediastream, opts) {
   }
 
   function set(newStream) {
-    var isMuted;
+    let isMuted;
 
     if ((MediaStream && !(newStream instanceof MediaStream)) || newStream._diff) {
       return _set(newStream);
@@ -56,7 +56,7 @@ module.exports = function(mediastream, opts) {
     }
 
     // Clean remove the listeners
-    var existing = raw();
+    const existing = raw();
     if (existing && existing.getTracks) {
       existing.getTracks().map(function(t) {
         t.removeEventListener('ended', touch);
