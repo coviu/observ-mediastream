@@ -16,6 +16,7 @@ const URL = require("feature/detect")("URL");
 module.exports = function (mediastream, opts) {
   opts = opts || {};
   const muted = Observ(false); // If an audio track has been disabled.
+  const withheld = Observ(false); // If media has been intentially withheld (e.g. by an SFU).
   const raw = Observ(null);
   const url = Observ(null);
   const version = Observ(1);
@@ -97,6 +98,7 @@ module.exports = function (mediastream, opts) {
   s = ObservStruct({
     tracks: tracks,
     muted: muted,
+    withheld: withheld,
     raw: raw,
     url: url,
     tags: tags,
