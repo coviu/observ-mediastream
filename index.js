@@ -1,8 +1,8 @@
-var Observ = require('observ');
-var ObservArray = require('observ-array');
-var ObservStruct = require('observ-struct');
-var MediaStream = require('feature/detect')('MediaStream');
-var URL = require('feature/detect')('URL');
+var Observ = require("observ");
+var ObservArray = require("observ-array");
+var ObservStruct = require("observ-struct");
+var MediaStream = require("feature/detect")("MediaStream");
+var URL = require("feature/detect")("URL");
 /**
   # observ-mediastream
 
@@ -13,10 +13,12 @@ var URL = require('feature/detect')('URL');
 
   <<< examples/simple.js
 **/
-module.exports = function(mediastream, opts) {
+module.exports = function (mediastream, opts) {
   opts = opts || {};
   var muted = Observ(false);
   var raw = Observ(null);
+  var remoteAudioTrack = Observ(null);
+  var remoteVideoTrack = Observ(null);
   var url = Observ(null);
   var version = Observ(1);
   var tracks = ObservArray([]);
@@ -26,8 +28,8 @@ module.exports = function(mediastream, opts) {
   var _set;
 
   function getAudioTracks() {
-    return tracks.filter(function(track) {
-      return track.kind === 'audio';
+    return tracks.filter(function (track) {
+      return track.kind === "audio";
     });
   }
 
@@ -35,12 +37,23 @@ module.exports = function(mediastream, opts) {
     s.version.set(version() + 1);
   }
 
+  function setRemoteTrack(track) {
+    if (track.kind === "audio") {
+      remoteAudioTrack.set(track);
+    } else {
+      remoteVideoTrack.set(track);
+    }
+  }
+
   function set(newStream) {
     var isMuted;
 
-    if ((MediaStream && !(newStream instanceof MediaStream)) || newStream._diff) {
+    if (
+      (MediaStream && !(newStream instanceof MediaStream)) ||
+      newStream._diff
+    ) {
       return _set(newStream);
-    }    
+    }
 
     if (URL) {
       // if we have an existing url, revoke the url
@@ -58,24 +71,27 @@ module.exports = function(mediastream, opts) {
     // Clean remove the listeners
     var existing = raw();
     if (existing && existing.getTracks) {
-      existing.getTracks().map(function(t) {
-        t.removeEventListener('ended', touch);
-        t.removeEventListener('mute', touch);
-        t.removeEventListener('unmute', touch);
+      existing.getTracks().map(function (t) {
+        t.removeEventListener("ended", touch);
+        t.removeEventListener("mute", touch);
+        t.removeEventListener("unmute", touch);
       });
     }
 
     raw.set(newStream);
-    s.tracks.set([].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks()));
+    s.tracks.set(
+      [].concat(newStream.getVideoTracks()).concat(newStream.getAudioTracks())
+    );
 
-    isMuted = s.tracks.filter(function(track) {
-      // Attach the change of state listeners on the tracks
-      track.addEventListener('ended', touch);
-      track.addEventListener('mute', touch);
-      track.addEventListener('unmute', touch);
-      // Return the track if it matches the mute check
-      return track.kind === 'audio' && (! track.enabled);
-    })[0] || false;
+    isMuted =
+      s.tracks.filter(function (track) {
+        // Attach the change of state listeners on the tracks
+        track.addEventListener("ended", touch);
+        track.addEventListener("mute", touch);
+        track.addEventListener("unmute", touch);
+        // Return the track if it matches the mute check
+        return track.kind === "audio" && !track.enabled;
+      })[0] || false;
 
     if (s.muted() !== isMuted) {
       s.muted.set(isMuted);
@@ -83,15 +99,26 @@ module.exports = function(mediastream, opts) {
   }
 
   function toggleMuted(value) {
-    getAudioTracks().forEach(function(track) {
+    getAudioTracks().forEach(function (track) {
       track.enabled = !value;
     });
   }
 
-  s = ObservStruct({ tracks: tracks, muted: muted, raw: raw, url: url, tags: tags, metadata: metadata, version: version });
+  s = ObservStruct({
+    tracks: tracks,
+    muted: muted,
+    remoteAudioTrack: remoteAudioTrack,
+    remoteVideoTrack: remoteVideoTrack,
+    raw: raw,
+    url: url,
+    tags: tags,
+    metadata: metadata,
+    version: version,
+  });
   _set = s.set;
   s.set = set;
   s.touch = touch;
+  s.setRemoteTrack = setRemoteTrack;
 
   if (mediastream) {
     set(mediastream);
